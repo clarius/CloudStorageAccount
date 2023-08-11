@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en-US">
+
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,maximum-scale=2">
+    <link rel="stylesheet" type="text/css" media="screen" href="/CloudStorageAccount/assets/css/style.css?v=863aaef2c8f46bc816d00c949bbf71876a79cc31">
+
+<!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>CloudStorageAccount | Brings back the CloudStorageAccount for Azure Storage v12+</title>
+<meta name="generator" content="Jekyll v3.9.0" />
+<meta property="og:title" content="CloudStorageAccount" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Brings back the CloudStorageAccount for Azure Storage v12+" />
+<meta property="og:description" content="Brings back the CloudStorageAccount for Azure Storage v12+" />
+<meta property="og:site_name" content="CloudStorageAccount" />
+<script type="application/ld+json">
+{"headline":"CloudStorageAccount","@type":"WebSite","description":"Brings back the CloudStorageAccount for Azure Storage v12+","url":"/CloudStorageAccount/","name":"CloudStorageAccount","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+  </head>
+
+  <body>
+
+    <!-- HEADER -->
+    <div id="header_wrap" class="outer">
+        <header class="inner">
+          <a id="forkme_banner" href="https://github.com/devlooped/CloudStorageAccount">View on GitHub</a>
+
+          <h1 id="project_title">CloudStorageAccount</h1>
+          <h2 id="project_tagline">Brings back the CloudStorageAccount for Azure Storage v12+</h2>
+
+          
+        </header>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div id="main_content_wrap" class="outer">
+      <section id="main_content" class="inner">
+        <h1 id="-cloudstorageaccount"><img src="https://raw.githubusercontent.com/devlooped/CloudStorageAccount/main/assets/img/icon-32.png" alt="Icon" /> CloudStorageAccount</h1>
+
+<p><a href="https://www.nuget.org/packages/Devlooped.CloudStorageAccount"><img src="https://img.shields.io/nuget/v/Devlooped.CloudStorageAccount.svg?color=royalblue" alt="Version" /></a> 
+<a href="https://www.nuget.org/packages/Devlooped.CloudStorageAccount"><img src="https://img.shields.io/nuget/dt/Devlooped.CloudStorageAccount.svg?color=green" alt="Downloads" /></a> 
+<a href="https://github.com/devlooped/CloudStorageAccount/blob/main/license.txt"><img src="https://img.shields.io/github/license/devlooped/CloudStorageAccount.svg?color=blue" alt="License" /></a> 
+<a href="https://github.com/devlooped/CloudStorageAccount/actions"><img src="https://github.com/devlooped/CloudStorageAccount/workflows/build/badge.svg?branch=main" alt="Build" /></a></p>
+
+<p>CloudStorageAccount for Azure Storage v12+.</p>
+
+<h1 id="overview">Overview</h1>
+<!-- #Overview -->
+<p>The new unified Azure Storage and Tables client libraries do away with the 
+<a href="https://docs.microsoft.com/en-us/dotnet/api/microsoft.azure.storage.cloudstorageaccount?view=azure-dotnet">CloudStorageAccount</a> 
+that was typically used. This makes migration a bit painful, as noted in:</p>
+
+<ul>
+  <li><a href="https://github.com/Azure/azure-sdk-for-net/blob/main/sdk/tables/Azure.Data.Tables/MigrationGuide.md">Azure.Data.Tables</a> migration guide</li>
+  <li><a href="https://github.com/Azure/azure-sdk-for-net/blob/main/sdk/storage/Azure.Storage.Blobs/AzureStorageNetMigrationV12.md">Azure.Storage.Blobs</a> migration guide</li>
+</ul>
+
+<p>This package provides a (mostly) drop-in replacement, with source code brought (and updated) 
+from the <a href="https://github.com/Azure/azure-storage-net/blob/master/Lib/Common/CloudStorageAccount.cs">original location</a>.
+Just replace the old namespace <code class="language-plaintext highlighter-rouge">Microsoft.Azure.Storage</code> with <code class="language-plaintext highlighter-rouge">Devlooped</code> and you’re mostly done.</p>
+
+<p>In addition to the legacy, backwards-compatible APIs so projects compile right away with this 
+package when upgrading to v12 client libraries, there are a few newer APIs that are more aligned 
+with the new APIs, such as:</p>
+
+<ul>
+  <li>CloudStorageAccount.CreateBlobServiceClient (extension method)</li>
+  <li>CloudStorageAccount.CreateQueueServiceClient (extension method)</li>
+  <li>CloudStorageAccount.CreateTableServiceClient (extension method)</li>
+</ul>
+
+<p>These make it more explicit that you’re creating instances of the new service clients.</p>
+
+<h2 id="usage">Usage</h2>
+
+<div class="language-csharp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">var</span> <span class="n">account</span> <span class="p">=</span> <span class="n">CloudStorageAccount</span><span class="p">.</span><span class="n">DevelopmentStorageAccount</span><span class="p">;</span>
+
+<span class="kt">var</span> <span class="n">tableService</span> <span class="p">=</span> <span class="n">account</span><span class="p">.</span><span class="nf">CreateTableServiceClient</span><span class="p">();</span>
+<span class="c1">// legacy invocation works too: account.CreateCloudTableClient();</span>
+
+<span class="c1">// Can also access the endpoints for each service:</span>
+<span class="n">Console</span><span class="p">.</span><span class="nf">WriteLine</span><span class="p">(</span><span class="n">account</span><span class="p">.</span><span class="n">BlobEndpoint</span><span class="p">);</span>
+<span class="n">Console</span><span class="p">.</span><span class="nf">WriteLine</span><span class="p">(</span><span class="n">account</span><span class="p">.</span><span class="n">QueueEndpoint</span><span class="p">);</span>
+<span class="n">Console</span><span class="p">.</span><span class="nf">WriteLine</span><span class="p">(</span><span class="n">account</span><span class="p">.</span><span class="n">TableEndpoint</span><span class="p">);</span>
+</code></pre></div></div>
+<!-- #Overview -->
+
+<h2 id="dogfooding">Dogfooding</h2>
+
+<p><a href="https://pkg.kzu.io/index.json"><img src="https://img.shields.io/endpoint?url=https://shields.kzu.io/vpre/Devlooped.CloudStorageAccount/main&amp;label=nuget.ci&amp;color=brightgreen" alt="CI Version" /></a>
+<a href="https://github.com/devlooped/CloudStorageAccount/actions"><img src="https://github.com/devlooped/CloudStorageAccount/workflows/build/badge.svg?branch=main" alt="Build" /></a></p>
+
+<p>We also produce CI packages from branches and pull requests so you can dogfood builds as quickly as they are produced.</p>
+
+<p>The CI feed is <code class="language-plaintext highlighter-rouge">https://pkg.kzu.io/index.json</code>.</p>
+
+<p>The versioning scheme for packages is:</p>
+
+<ul>
+  <li>PR builds: <em>42.42.42-pr</em><code class="language-plaintext highlighter-rouge">[NUMBER]</code></li>
+  <li>Branch builds: <em>42.42.42-</em><code class="language-plaintext highlighter-rouge">[BRANCH]</code>.<code class="language-plaintext highlighter-rouge">[COMMITS]</code></li>
+</ul>
+
+<!-- include https://github.com/devlooped/sponsors/raw/main/footer.md -->
+<h1 id="sponsors">Sponsors</h1>
+
+<!-- sponsors.md -->
+<p><a href="https://github.com/clarius"><img src="https://raw.githubusercontent.com/devlooped/sponsors/main/.github/avatars/clarius.png" alt="Clarius Org" title="Clarius Org" /></a>
+<a href="https://github.com/augustoproiete"><img src="https://raw.githubusercontent.com/devlooped/sponsors/main/.github/avatars/augustoproiete.png" alt="C. Augusto Proiete" title="C. Augusto Proiete" /></a>
+<a href="https://github.com/KirillOsenkov"><img src="https://raw.githubusercontent.com/devlooped/sponsors/main/.github/avatars/KirillOsenkov.png" alt="Kirill Osenkov" title="Kirill Osenkov" /></a>
+<a href="https://github.com/MFB-Technologies-Inc"><img src="https://raw.githubusercontent.com/devlooped/sponsors/main/.github/avatars/MFB-Technologies-Inc.png" alt="MFB Technologies, Inc." title="MFB Technologies, Inc." /></a>
+<a href="https://github.com/sandrock"><img src="https://raw.githubusercontent.com/devlooped/sponsors/main/.github/avatars/sandrock.png" alt="SandRock" title="SandRock" /></a>
+<a href="https://github.com/agocke"><img src="https://raw.githubusercontent.com/devlooped/sponsors/main/.github/avatars/agocke.png" alt="Andy Gocke" title="Andy Gocke" /></a>
+<a href="https://github.com/decriptor"><img src="https://raw.githubusercontent.com/devlooped/sponsors/main/.github/avatars/decriptor.png" alt="Stephen Shaw" title="Stephen Shaw" /></a>
+<a href="https://github.com/torutek-gh"><img src="https://raw.githubusercontent.com/devlooped/sponsors/main/.github/avatars/torutek-gh.png" alt="Torutek" title="Torutek" /></a></p>
+
+<!-- sponsors.md -->
+
+<p><a href="https://github.com/sponsors/devlooped"><img src="https://raw.githubusercontent.com/devlooped/sponsors/main/sponsor.png" alt="Sponsor this project" title="Sponsor this project" /></a>
+ </p>
+
+<p><a href="https://github.com/sponsors">Learn more about GitHub Sponsors</a></p>
+
+<!-- https://github.com/devlooped/sponsors/raw/main/footer.md -->
+
+      </section>
+    </div>
+
+    <!-- FOOTER  -->
+    <div id="footer_wrap" class="outer">
+      <footer class="inner">
+        
+        <p class="copyright">CloudStorageAccount maintained by <a href="https://github.com/devlooped">devlooped</a></p>
+        
+        <p>Published with <a href="https://pages.github.com">GitHub Pages</a></p>
+      </footer>
+    </div>
+
+    
+  </body>
+</html>
